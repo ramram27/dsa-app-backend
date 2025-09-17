@@ -29,12 +29,44 @@ model RefreshToken {
   createdAt DateTime @default(now())
 }
 
-model QuestionPaper {
-  id           Int    @id @default(autoincrement())
-  questionName String @unique
-  optionA      String
-  optionB      String
-  optionC      String
-  optionD      String
-  ans          String
+model Topic {
+  id        String     @id @default(cuid())
+  key       String     @unique
+  title     String
+  status    Status     @default(PENDING)
+  color     String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  subTopics SubTopic[]
+
+  @@map("topics")
+}
+
+model SubTopic {
+  id           String   @id @default(cuid())
+  name         String
+  leetCodeLink String?
+  youTubeLink  String?
+  articleLink  String?
+  level        Level
+  status       Status   @default(PENDING)
+  completed    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  topicId      String
+  topic        Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@map("sub_topics")
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+enum Level {
+  EASY
+  MEDIUM
+  HARD
 }
