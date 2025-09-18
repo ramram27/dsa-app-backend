@@ -24,7 +24,7 @@ const corsOptions = {
     ]
 };
 
-app.use(cors(corsOptions))
+app.use(cors({ origin: 'https://dsa-app-opal.vercel.app/' }))
 app.use(express.json());
 
 app.use('/api', userRoutes);
